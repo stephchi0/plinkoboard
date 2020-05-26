@@ -10,7 +10,6 @@ public class main
         PlinkoBoard board = new PlinkoBoard();
         window.add(board);
         board.addMouseListener(board);
-        window.addKeyListener(board);
         
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);

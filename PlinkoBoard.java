@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.imageio.ImageIO;
 import java.util.ArrayList;
-public class PlinkoBoard extends JPanel implements ActionListener, MouseListener, KeyListener
+public class PlinkoBoard extends JPanel implements ActionListener, MouseListener
 {
     int circleX = -50;
     int circleY = -50;
@@ -114,102 +114,10 @@ public class PlinkoBoard extends JPanel implements ActionListener, MouseListener
             g.drawString("YOU HIT THE MONEY MAKER", 25, 315);
         }
     }
-    ArrayList<Integer> tests = new ArrayList<Integer>();
-    boolean test = true;
-    int numberOfTests = 100000;
     int columnP = -1;
     public void actionPerformed(ActionEvent e) {
-        /*if (test) {
-            if (columnP == -1) columnP = column;
-            if (!animation) {
-                if (numberOfTests > 0) {
-                    numberOfTests--;
-                    animation = true;
-                    drop = false;
-                    if (row > 9 )tests.add(column);
-                    else tests.add(0);
-                    column = columnP;
-                    row = 1;
-                    circleX = (column * 25) - 5 + 25;
-                    circleY = (row * 50) - 20 + 25 - 50;
-                }
-                else {
-                    int[] numberAtOutcomes = {0, 0, 0, 0, 0, 0, 0, 0};
-                    for (int i : tests) {
-                        numberAtOutcomes[(i + 1) / 2]++;
-                    }
-                    System.out.println("Column " + columnP
-                    + "\nSlot 1: " + numberAtOutcomes[1]
-                    + "\nSlot 2: " + numberAtOutcomes[2]
-                    + "\nSlot 3: " + numberAtOutcomes[3]
-                    + "\nSlot 4: " + numberAtOutcomes[4]
-                    + "\nSlot 5: " + numberAtOutcomes[5]
-                    + "\nSlot 6: " + numberAtOutcomes[6]
-                    + "\nSlot 7: " + numberAtOutcomes[7]
-                    + "\nMoney Makers: " + numberAtOutcomes[0] + "\n\n\n\n\n");
-                    tests.clear();
-                    columnP = -1;
-                    numberOfTests = 100;
-                    timer.stop();
-                }
-            }
-        }*/
         if (animation) animate();
         repaint();
-    }
-    public void test(int tColumn, int numberOfTests) {
-        int tempColumn = tColumn;
-        for (int i = 0; i < numberOfTests; i++) {
-            boolean added = false;
-            for (int k = 1; k < 13; k++) {
-                boolean left = tempColumn != 1;
-                boolean right = tempColumn != 13;
-                if (left == right) left = Math.random() < 0.5;
-                right = !left;
-                
-                if (k > 1) {
-                    if (left) tempColumn--;
-                    else if (right) tempColumn++;
-                }
-                if (k == 8 && (tempColumn == 5 || tempColumn == 9)) {
-                    tests.add(-1);
-                    added = true;
-                    break;
-                }
-            }
-            if (!added) tests.add(tempColumn);
-            tempColumn = tColumn;
-        }
-        int[] numberAtOutcomes = {0, 0, 0, 0, 0, 0, 0, 0};
-        for (int i : tests) {
-            numberAtOutcomes[(i + 1) / 2]++;
-        }
-        /*System.out.println(
-            "Column " + column / 2
-        + "\nSlot 1: " + numberAtOutcomes[1]
-        + "\nSlot 2: " + numberAtOutcomes[2]
-        + "\nSlot 3: " + numberAtOutcomes[3]
-        + "\nSlot 4: " + numberAtOutcomes[4]
-        + "\nSlot 5: " + numberAtOutcomes[5]
-        + "\nSlot 6: " + numberAtOutcomes[6]
-        + "\nSlot 7: " + numberAtOutcomes[7]
-        + "\nKhaled: " + numberAtOutcomes[0] + "\n\n");*/
-        /*System.out.println("\nColumn " + column / 2);
-        System.out.print("Khaled: ");
-        for (int i : numberAtOutcomes) {
-            System.out.println(i);
-        }
-        /*System.out.println(
-            "Column " + column / 2
-        + "\n" + numberAtOutcomes[1]
-        + "\n" + numberAtOutcomes[2]
-        + "\n" + numberAtOutcomes[3]
-        + "\n" + numberAtOutcomes[4]
-        + "\n" + numberAtOutcomes[5]
-        + "\n" + numberAtOutcomes[6]
-        + "\n" + numberAtOutcomes[7]
-        + "\n" + numberAtOutcomes[0] + "\n\n");*/
-        tests.clear();
     }
     public void mousePressed(MouseEvent e) {
         if (!animation) {
@@ -224,9 +132,7 @@ public class PlinkoBoard extends JPanel implements ActionListener, MouseListener
                     animation = true;
                     drop = false;
                     timer.start();
-                    
-                    //test stuff
-                    test(column, numberOfTests);
+
                     break;
                 }
             }
@@ -238,9 +144,8 @@ public class PlinkoBoard extends JPanel implements ActionListener, MouseListener
     int move2 = 50;
     String[] path = {"left", "right"};
     public void animate() {
-        if (!drop/* || test*/) {
-            if (cheatMode) direction = path[row%2];
-            else direction = randomDirection();
+        if (!drop) {
+            direction = randomDirection();
             move(direction);
             drop = true;
             move0 = 50;
@@ -276,7 +181,7 @@ public class PlinkoBoard extends JPanel implements ActionListener, MouseListener
         if (row > numberOfRows || hitKhaled()) {
             animation = false;
             drop = false;
-            /*if (!test)*/ timer.stop();
+            timer.stop();
         }
         else {
             //move according to direction
@@ -313,11 +218,4 @@ public class PlinkoBoard extends JPanel implements ActionListener, MouseListener
     public void mouseClicked(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
     public void mouseReleased(MouseEvent e) {}
-    public void keyReleased(KeyEvent e){}
-    boolean cheatMode = false;
-    public void keyPressed(KeyEvent e)
-    {
-        cheatMode = !cheatMode;
-    }
-    public void keyTyped(KeyEvent e){}
 }
